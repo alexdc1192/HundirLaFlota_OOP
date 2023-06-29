@@ -2,3 +2,6 @@ BOARD_SIZE = 3
 EMPTY_SIGN = "_"
 BOAT_SIGN = "0"
 BOAT_SIZES = [3,2,1]
+
+WATER_SIGN = "~"  
+HIT_SIGN = "X"  
