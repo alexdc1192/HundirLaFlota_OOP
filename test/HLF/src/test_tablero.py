@@ -22,16 +22,53 @@ def test_tablero_init_values():
 
 def test_place_boat_size_2_board_5():
     size = 3
-    coord_x, coord_y = (0,0)
-    orient = "S"
     boat_size = 2
-
     tablero_1 = Tablero(size)
-    new_tab = tablero_1.place_boat(coord_x, coord_y, orient, boat_size)
     b = config.BOAT_SIGN
     e = config.EMPTY_SIGN
-    exp_out = np.array([[b, e, e],
+
+# ORIENTACION SUR
+    coord_x, coord_y = (0,0)
+    orient = "S"
+    
+    new_tab_S = tablero_1.place_boat(coord_x, coord_y, orient, boat_size)
+
+    output_S = np.array([[b, e, e],
                         [b, e, e],
                         [e, e, e]])
+    cond_S = np.all(output_S == new_tab_S)
 
-    assert np.all(new_tab == exp_out)
+# ORIENTACION NORTE   
+    coord_x, coord_y = (2,0)
+    orient = "N"
+    
+    new_tab_N = tablero_1.place_boat(coord_x, coord_y, orient, boat_size)
+
+    output_N = np.array([[e, e, e],
+                        [b, e, e],
+                        [b, e, e]])
+    cond_N = np.all(output_N == new_tab_N)
+
+# ORIENTACION ESTE
+    coord_x, coord_y = (0,0)
+    orient = "E"
+    
+    new_tab_E = tablero_1.place_boat(coord_x, coord_y, orient, boat_size)
+
+    output_E = np.array([[b, b, e],
+                        [e, e, e],
+                        [e, e, e]])
+    cond_E = np.all(output_E == new_tab_E)
+
+# ORIENTACION OESTE
+    coord_x, coord_y = (0,2)
+    orient = "W"
+    
+    new_tab_W = tablero_1.place_boat(coord_x, coord_y, orient, boat_size)
+
+    output_W = np.array([[e, b, b],
+                        [e, e, e],
+                        [e, e, e]])
+    cond_W = np.all(output_W == new_tab_W)
+
+    assert np.all(cond_S & cond_N & cond_E & cond_W)
