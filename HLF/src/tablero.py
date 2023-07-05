@@ -36,7 +36,7 @@ class Tablero:
             tab[coord_x, coord_y:final_col:-1] = self.BOAT_SIGN
 
         return tab
-# ======================
+# ====================== LAST UPDATE
  
     def get_cell(self, x, y):
         return self.board[x, y]

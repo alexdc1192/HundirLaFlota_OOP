@@ -20,7 +20,7 @@ class Player:
         self.name = name
         
 # Método para disparar, pidiendo coordenadas del disparo y tablero donde se dispara
-# (borrador, a revisar)
+# (borrador, a revisar) ========= LAST UPDATE
     def shoot(self, coordinates, board):
         x, y = coordinates
         cell = board.get_cell(x, y)  # Obtener la celda del tablero en las coordenadas dadas
