@@ -3,6 +3,8 @@ import numpy as np
 import os, sys
 sys.path.append(os.getcwd())
 from HLF.utils import config
+from HLF.src.tablero import Tablero
+
 
 class Player:
 
@@ -23,8 +25,10 @@ class Player:
         x, y = coordinates
         cell = board.get_cell(x, y)  # Obtener la celda del tablero en las coordenadas dadas
 
-        if cell == board.SHIP_CELL:  # Si la celda contiene un barco
+        if cell == Tablero.BOAT_SIGN:  # Si la celda contiene un barco
             board.mark_ship_hit(x, y)  # Marcar el barco como impactado en el tablero
             return True  # Retorna True para indicar que hubo un impacto
         else:
+            board.mark_shot(x, y, False)
             return False  # Retorna False para indicar que fue un disparo fallido
+        

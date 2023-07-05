@@ -8,6 +8,7 @@ class Tablero:
     BOARD_SIZE = config.BOARD_SIZE
     EMPTY_SIGN = config.EMPTY_SIGN
     BOAT_SIGN = config.BOAT_SIGN
+
     
     def __init__(self, size = None):
         if size is not None:
@@ -35,6 +36,24 @@ class Tablero:
             tab[coord_x, coord_y:final_col:-1] = self.BOAT_SIGN
 
         return tab
+# ======================
+ 
+    def get_cell(self, x, y):
+        return self.board[x, y]
+
+    def mark_ship_hit(self, x, y):
+        self.board[x, y] = config.HIT_SIGN
+
+    def mark_shot(self, x, y, hit):
+        if hit:
+            self.board[x, y] = config.HIT_SIGN
+        else:
+            self.board[x, y] = config.WATER_SIGN
+
+    def __str__(self):
+        return str(self.board)
+    
+ # ======================   
 
 if __name__ == "__main__":
     
