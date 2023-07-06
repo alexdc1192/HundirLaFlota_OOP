@@ -32,3 +32,9 @@ class Player:
             board.mark_shot(x, y, False)
             return False  # Retorna False para indicar que fue un disparo fallido
         
+
+if __name__ == "__main__":
+        
+    alex_player = Player("Alex")
+    maquina_tablero = Tablero()
+    print(alex_player)       

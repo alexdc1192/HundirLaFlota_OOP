@@ -39,19 +39,19 @@ class Tablero:
 # ====================== LAST UPDATE
  
     def get_cell(self, x, y):
-        return self.board[x, y]
+        return self.tablero[x, y]
 
     def mark_ship_hit(self, x, y):
-        self.board[x, y] = config.HIT_SIGN
+        self.tablero[x, y] = config.HIT_SIGN
 
     def mark_shot(self, x, y, hit):
         if hit:
-            self.board[x, y] = config.HIT_SIGN
+            self.tablero[x, y] = config.HIT_SIGN
         else:
-            self.board[x, y] = config.WATER_SIGN
+            self.tablero[x, y] = config.WATER_SIGN
 
     def __str__(self):
-        return str(self.board)
+        return str(self.tablero)
     
  # ======================   
 
