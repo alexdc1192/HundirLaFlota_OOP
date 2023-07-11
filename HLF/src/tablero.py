@@ -1,6 +1,6 @@
 import numpy as np
 
-import os, sys
+import os, sys, random
 sys.path.append(os.getcwd())
 from HLF.utils import config
 
@@ -53,7 +53,8 @@ class Tablero:
     def __str__(self):
         return str(self.tablero)
     
- # ======================   
+# ====================== LAST UPDATE
+
 
 if __name__ == "__main__":
     
