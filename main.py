@@ -1,85 +1,62 @@
 from HLF.src.player import Player
 from HLF.src.tablero import Tablero
+from HLF.utils.config import COMP_NAME
+
 import numpy as np
+import time
+
+# Definición de la lógica del juego 
 
 tablero_jugador = Tablero()
 tablero_maquina = Tablero()
-jugador = Player()
-maquina = Player()
+tablero_maquina_pub = Tablero()
 
-print(jugador)
-print(tablero_maquina)
+name = input("Introduce tu nombre: ")
+jugador = Player(name)
+maquina = Player(COMP_NAME)
 
-# ====================== LAST UPDATE
+# Añadimos/Inicializamos los barcos
+tablero_jugador.initialize_boats()
+tablero_maquina.initialize_boats()
 
-def print_board(board):
-    for row in board:
-        print(" ".join(row))
+print(tablero_jugador.tablero)
+print("\n")
+print(tablero_maquina_pub.tablero)
+print("\n")
 
-def main():
-    print("¡Bienvenido a Hundir la Flota!")
-    print("Instrucciones:")
-    print("- Introduce las coordenadas en el formato 'fila columna'. Por ejemplo, '2 3' para disparar en la fila 2, columna 3.")
-    print("- Elige las coordenadas para hundir los barcos enemigos.")
-    print("- ¡Buena suerte!\n")
+while True:
+    print(f"\nTURNO DE{jugador.name.upper()}")
+    x = int(input('Introduzca coordenada X: \n'))
+    y = int(input('Introduzca coordenada Y: \n'))
+    print(f"DISPARA EN ({x}, {y})\n")
+    tablero_maquina.tablero = jugador.shoot(x, y, tablero_maquina)
+    tablero_maquina_pub.tablero[x, y] = tablero_maquina.tablero[x, y]
 
-    tablero_jugador = Tablero()
-    tablero_maquina = Tablero()
-    jugador = Player("Jugador")
-    maquina = Player("Máquina")
+    print(tablero_jugador.tablero)
+    print("\n")
+    print(tablero_maquina.tablero)
+    print("\n\n")
 
-    tablero_jugador.place_boat(0, 0, "S", 1)  # Ejemplo: Coloca un barco de 1 posición en el tablero del jugador
+    if not np.any(tablero_maquina.tablero == tablero_maquina.BOAT_SIGN):
+        print(f"\n{jugador.name.upper()} GANA!!!\n")
+        break
+    time.sleep (2)
 
-    # Comienza el juego
     while True:
-        print("=== TURNO DEL JUGADOR ===")
-        print("Tablero del jugador:")
-        print_board(tablero_jugador.tablero)
-
-        while True:
-            disparo = input("Ingresa las coordenadas de tu disparo (fila columna): ").split()
-            x, y = map(int, disparo)
-
-            if 0 <= x < Tablero.BOARD_SIZE and 0 <= y < Tablero.BOARD_SIZE:
-                break
-            else:
-                print("Coordenadas inválidas. Intenta nuevamente.")
-
-        hit = jugador.shoot((x, y), tablero_maquina)
-        if hit:
-            print("¡Impacto!")
-        else:
-            print("Agua...")
-
-        if tablero_maquina.tablero[x, y] == Tablero.HIT_SIGN:
-            print("¡Hundiste un barco enemigo!")
-
-        print("\n=== TURNO DE LA MÁQUINA ===")
-        while True:
-            disparo, hit = maquina.random_shot(tablero_jugador)
-            x, y = disparo
-            print(f"La máquina dispara en las coordenadas ({x}, {y}).")
-
-            if hit:
-                print("¡Impacto!")
-            else:
-                print("Agua...")
-
-            if tablero_jugador.tablero[x, y] == Tablero.HIT_SIGN:
-                print("¡La máquina hundió tu barco!")
-
-            break  # Solo se realiza un disparo por turno de la máquina
-
-        # Verificar si alguno de los jugadores se quedó sin barcos
-        if np.count_nonzero(tablero_jugador.tablero == Tablero.BOAT_SIGN) == 0:
-            print("\nLa máquina ganó. ¡Tus barcos han sido hundidos!")
+        try:
+            x_maq, y_maq = np.random.randint(0, tablero_jugador.BOARD_SIZE, size=2)
+            tablero_jugador.tablero = maquina.shoot(x_maq, y_maq,tablero_jugador)
             break
+        except ValueError:
+            continue
 
-        if np.count_nonzero(tablero_maquina.tablero == Tablero.BOAT_SIGN) == 0:
-            print("\n¡Felicidades! ¡Hundiste todos los barcos enemigos!")
-            break
+    print(f"\nTURNO DE {maquina.name.upper()}")
+    print(f"DISPARA EN ({x_maq}, {y_maq})\n")
 
-        print("=== SIGUIENTE TURNO ===\n")
-
-if __name__ == "__main__":
-    main()
+    print(tablero_jugador.tablero)
+    print("\n")
+    print(tablero_maquina_pub.tablero)
+    print("\n\n")
+    
+    if not np.any(tablero_jugador.tablero == tablero_jugador.BOAT_SIGN):
+        print(f"\n{maquina.name.upper()} GANA!!!\n")
